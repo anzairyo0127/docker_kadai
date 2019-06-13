@@ -6,7 +6,7 @@
 
 `IPアドレス`部分または`port番号`部分は好きな値でも問題はない。
 
-`nginx:1.15-apline`イメージを使用すること。
+`nginx:1.15-alpine`イメージを使用すること。
 
 ![Welcome to nginx](https://github.com/anzairyo0127/docker_kadai/blob/master/image/nginxWelcome.png)
 
@@ -14,7 +14,7 @@
 
 ### nginxイメージについて
 
-`nginx:1.15`Imageは`80`ポートが解放されています。
+`nginx:1.15-alpine`Imageは`80`ポートが解放されています。
 
 ## 【応用】index.htmlを表示させて見よう
 
@@ -26,7 +26,7 @@
 
 `IPアドレス`部分または`port番号`部分は好きな値でも問題はない。
 
-`nginx:1.15-apline`イメージを使用すること。
+`nginx:1.15-alpine`イメージを使用すること。
 
 ![Hello Docker Volume](https://github.com/anzairyo0127/docker_kadai/blob/master/image/HelloDockerVolume.png)
 
