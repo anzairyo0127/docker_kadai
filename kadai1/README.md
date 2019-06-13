@@ -8,7 +8,7 @@
 
 `nginx:1.15-apline`イメージを使用すること。
 
-[ここに画像を表示させる。1]
+![Welcome to nginx](https://github.com/anzairyo0127/docker_kadai/blob/master/image/nginxWelcome.png)
 
 ## Hint
 
@@ -28,7 +28,7 @@
 
 `nginx:1.15-apline`イメージを使用すること。
 
-[ここに画像を表示させる。2]
+![Hello Docker Volume](https://github.com/anzairyo0127/docker_kadai/blob/master/image/HelloDockerVolume.png)
 
 ### hint
 
