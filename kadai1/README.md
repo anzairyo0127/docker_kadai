@@ -1,42 +1,42 @@
-## DockerコマンドでWelcome to nginxを表示させよう。
+## 【基本課題】DockerコマンドでWelcome to nginxを表示させよう
 
-`docker`コマンドを用いて以下の画像のように表示させること。
+### 条件
 
-`http://127.0.0.1:8080`または`http://192.168.99.100:8080`にアクセスすると表示されるようにすること。
+1. `docker`コマンドを用いて以下の画像のように表示させよう。
 
-`IPアドレス`部分または`port番号`部分は好きな値でも問題はない。
+1. `IPアドレス`部分または`port番号`部分は好きな値でも問題はありません。
 
-`nginx:1.15-alpine`イメージを使用すること。
+1. `nginx:1.15-alpine`イメージを使用してください。
 
 ![Welcome to nginx](https://github.com/anzairyo0127/docker_kadai/blob/master/image/nginxWelcome.png)
 
-## Hint
+### Hint
 
-### nginxイメージについて
+#### nginxイメージについて
 
 `nginx:1.15-alpine`Imageは`80`ポートが解放されています。
 
-## 【応用】index.htmlを表示させて見よう
+## 【応用課題】index.htmlを表示させましょう
 
-`docker`コマンドを使って`Hello Docker Volume`と表示するHTMLを表示させること。
+### 条件
 
-`volume`オプションを使って`index.html`をコンテナに渡し表示させること。
+1. `docker`コマンドを使って`Hello Docker Volume`と表示するHTMLページを表示させましょう。
 
-`http://127.0.0.1:8080`または`http://192.168.99.100:8080`にアクセスすると表示されるようにすること。
+1. `volume`オプションを使って`index.html`をコンテナに渡し、表示させてください。
 
-`IPアドレス`部分または`port番号`部分は好きな値でも問題はない。
+1. `IPアドレス`部分または`port番号`部分は好きな値でも問題ありません。
 
-`nginx:1.15-alpine`イメージを使用すること。
+1. `nginx:1.15-alpine`イメージを使用してください。
 
 ![Hello Docker Volume](https://github.com/anzairyo0127/docker_kadai/blob/master/image/HelloDockerVolume.png)
 
-## Hint
+### Hint
 
-### index.htmlについて
+#### index.htmlについて
 
 使用する`index.html`はこの`kadai1`ディレクトリ内にあるものを使用してください。
 
-### volumeオプションについて
+#### volumeオプションについて
 
 `docker`の`-v`オプションはホストPCのディレクトリとコンテナのディレクトリを共有できます。
 
@@ -44,7 +44,7 @@
 -v ホストPCのマウント元の'絶対PATH':コンテナのマウント先の'絶対PATH'
 ```
 
-### nginxイメージについて
+#### nginxドキュメントルートについて
 
 `nginx:1.15-alpine`イメージのデフォルトのドキュメントルートは下記のPATHです。
 
@@ -52,3 +52,39 @@
 /usr/share/nginx/html
 ```
 
+## 【スペシャル課題】二つのNginxコンテナを起動させよう。
+
+### 条件
+
+1. Dockerでnginxコンテナを２つ起動させましょう。
+
+1. １つは基本課題のものを、もう１つは応用課題のものを起動させてください。
+
+1. いずれもアクセス可能な状況であることが達成条件です。
+
+### Hint
+
+#### ポート番号が重複しないようにしましょう。
+
+使用するポート番号が重複してしまうと起動することができません。
+
+例)
+```bash
+docker: Error response from daemon: driver failed programming 
+external connectivity on endpoint dazzling_bhaskara (CONTAINER_ID): 
+Bind for 0.0.0.0:8080 failed: port is already allocated.
+```
+
+## 【おかたづけ】Dockerコンテナをストップし、削除しましょう。
+
+### 条件
+
+1. 3つの課題で作成したコンテナについて、全て停止しましょう。
+
+1. 3つの課題で作成したコンテナについて、全て削除しましょう。
+
+### Hint
+
+#### Dockerコンテナの停止方法とDockerコンテナの削除方法について
+
+いろんな方法がありますが、消えていればなんでも良いです。
