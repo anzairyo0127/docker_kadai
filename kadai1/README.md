@@ -30,11 +30,25 @@
 
 ![Hello Docker Volume](https://github.com/anzairyo0127/docker_kadai/blob/master/image/HelloDockerVolume.png)
 
-### hint
+## Hint
 
-`docker`の`-v`オプションはホストPCとコンテナ
+### index.htmlについて
 
+使用する`index.html`はこの`kadai1`ディレクトリ内にあるものを使用してください。
+
+### volumeオプションについて
+
+`docker`の`-v`オプションはホストPCのディレクトリとコンテナのディレクトリを共有できます。
 
 ```bash
 -v ホストPCのマウント元の'絶対PATH':コンテナのマウント先の'絶対PATH'
 ```
+
+### nginxイメージについて
+
+`nginx:1.15-alpine`イメージのデフォルトのドキュメントルートは下記のPATHです。
+
+```
+/usr/share/nginx/html
+```
+
