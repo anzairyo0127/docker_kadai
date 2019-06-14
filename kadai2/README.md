@@ -32,9 +32,9 @@
 
 それぞれを解答としてください。
 
-[ここに画面を表示させる。1]
+![hello_world](https://github.com/anzairyo0127/docker_kadai/blob/master/image/flask_helloworld.png)
 
-[ここに画面を表示させる。2]
+![hello_kuzunoha](https://github.com/anzairyo0127/docker_kadai/blob/master/image/flask_hello_kuzunoha.png)
 
 ### Hint
 
