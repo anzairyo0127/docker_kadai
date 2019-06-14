@@ -113,9 +113,7 @@ CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
 
 `* Environment: production`のとき、`Flask`のデバッグモードが動作しません。
 
-デバッグモードのとき、`http://127.0.0.1:8080/test/hogehoge`にアクセスすれば
-
-デバッグが出力されます。
+デバッグモードのとき、`http://127.0.0.1:8080/test/hogehoge`にアクセスすればエラーを返すデバッグが出力されます。
 
 ## 解説-【スペシャル課題】CharesetがUTF-8のMySQLイメージを作成しよう。
 
