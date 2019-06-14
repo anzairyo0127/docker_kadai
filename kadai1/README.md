@@ -1,124 +1,118 @@
-## 【基本課題】DockerコマンドでWelcome to nginxを表示させよう
+## 解説-【基本課題】DockerコマンドでWelcome to nginxを表示させよう
 
-### 条件
+### 解答例
 
-1. `docker`コマンドを用いて以下の画像のように、nginxのWelcome画面表示させよう。
+```
+docker run -p 8080:80 nginx:1.15-alpine
+```
 
-1. nginxとはWebサーバーアプリケーションです。
-
-1. nginxが問題なく動作しているとき、Webブラウザで80番ポートにアクセスするとWelcome画面が出力されます。
-
-1. 下記画像では`http://127.0.0.1:8080`にアクセスして表示していますが、`IPアドレス`部分と`port番号`部分は好きな値でも問題はありません。
-
-1. `nginx:1.15-alpine`イメージを使用してください。
-
-上記の条件のとき、使用する`dockerコマンド`を解答としてください。
+として、`http://127.0.0.1:8080` (DockerToolboxの場合は`http://192.168.99.100:8080`)でアクセスできます。 
 
 ![Welcome to nginx](https://github.com/anzairyo0127/docker_kadai/blob/master/image/nginxWelcome.png)
 
-### Hint
+### 解説
 
-#### nginxイメージについて
+`nginx:1.15-alpine`イメージは、`run`をすると80番ポートで`nginx`というソフトウェアを起動するコンテナを生成します。
 
-`nginx:1.15-alpine`Imageは`80`ポートが解放されています。
+Dockerfile:https://github.com/nginxinc/docker-nginx/blob/master/mainline/alpine/Dockerfile
 
-#### dockerコマンドのオプションもうまく使おう
+ホストPCとコンテナの間にポートマッピングを施してあげれば、アクセスは可能になります。
 
-下記コマンドでは要件は満たされないと思います。
+そのための`-p`オプションが必要になります。`-p`の引数に`[ホストPCのポート番号]:[コンテナのポート番号]`を渡してあげましょう
 
-どういったオプションコマンドが必要であるか調べたりしながら答えを見つけましょう。
+つまづくポイントとしてはオプションの指定方法かもしれません。
 
-オプションコマンドは複数適応させることも可能です。
+失敗例
+```
+# オプションの位置がイメージ名より後に来ている。
+docker run nginx:1.15-alpine -p 8080:80
+```
+
+これは`nginx:1.15-alpine`で作成するコンテナに「`-p 8080:80`というコマンドを実行しなさい」という命令になってしまいます。
+
+基本的に、`docker run`を行うときは、オプションコマンドはイメージ名より後にするようにしましょう。
+
+
+## 解説-【応用課題】index.htmlを表示させましょう
+
+### 解答例
 
 ```
-docker run nginx:1.15-alpine
+docker run -p 8080:80 -v /home/kuzunoha/desktop/working/docker_kadai/kadai1:/usr/share/nginx/html  nginx:1.15-alpine 
 ```
 
-## 【応用課題】index.htmlを表示させましょう
+`/home/kuzunoha/desktop/working/docker_kadai/kadai1`に関しては自分のディレクトリに置き換えてください。
 
-### 条件
+あるいは
 
-1. `docker`コマンドを使って`Hello Docker Volume`と表示するHTMLページを表示させましょう。
-
-1. `volume`オプションを使ってこのディレクトリ内の`index.html`をコンテナに渡し、それを表示させてください。
-
-1. 下記画像では`http://127.0.0.1:8080`にアクセスして表示していますが、`IPアドレス`部分または`port番号`部分は好きな値でも問題ありません。
-
-1. `nginx:1.15-alpine`イメージを使用してください。
-
-上記の条件のとき、使用する`dockerコマンド`を解答としてください。
+```
+docker run -p 8080:80 -v ${PWD}:/usr/share/nginx/html nginx:1.15-alpine
+```
 
 ![Hello Docker Volume](https://github.com/anzairyo0127/docker_kadai/blob/master/image/HelloDockerVolume.png)
 
-### Hint
+### 解説
 
-#### index.htmlについて
-
-使用する`index.html`はこの`kadai1`ディレクトリ内にあるものを使用してください。
-
-#### volumeオプションについて
-
-`docker`の`-v`オプションはホストPCのディレクトリとコンテナのディレクトリを共有できます。
-
-```bash
--v ホストPCのマウント元の'絶対PATH':コンテナのマウント先の'絶対PATH'
-```
-
-#### nginxドキュメントルートについて
-
-`nginx:1.15-alpine`イメージのデフォルトのドキュメントルートは下記のPATHです。
+`nginx:1.15-alpine`のドキュメントルートは以下のパスになります。
 
 ```
 /usr/share/nginx/html
 ```
+この`html`ディレクトリ内にある`html`ファイルを読み込んで出力します。
 
-#### nginxを知ろう
+うち、`index.html`がトップページになるようにデフォルトで設定されています。
 
-何かがうまく行かないときは`docker`を疑う前に`ミドルウェア`を疑いましょう。
+`-v`コマンドはHintにも記載したとおり、絶対パスで指定してあげてください。
 
-今回の`nginx`は、比較的、日本語でも調べれば色々出てきてくれます。
-
-もう一つ、`nginx`と`nginxイメージ`は若干異なるということも覚えておきましょう。
-
-そのため、調べ方としては`nginx docker`や`nginx image`など、`docker`と関連付けるような単語と併せるとよいでしょう。
-
-## 【スペシャル課題】二つのNginxコンテナを起動させよう。
-
-### 条件
-
-1. Dockerでnginxコンテナを２つ起動させましょう。
-
-1. １つは基本課題のものを、もう１つは応用課題のものを起動させてください。
-
-1. いずれもアクセス可能な状況であることが達成条件です。
-
-1. 例えば`http://127.0.0.1:8080`ではWelcome画面,`http://127.0.0.1:8888`ではHello Docker Volume画面など。
-
-### Hint
-
-#### ポート番号が重複しないようにしましょう。
-
-使用するポート番号が重複してしまうと起動することができません。
-
-例)
-```bash
-docker: Error response from daemon: driver failed programming 
-external connectivity on endpoint dazzling_bhaskara (CONTAINER_ID): 
-Bind for 0.0.0.0:8080 failed: port is already allocated.
+失敗例
 ```
+# -vpとオプションを繋げている
+docker run -pv 8080:80 ${PWD}:/usr/share/nginx/html nginx:1.15-alpine
+```
+
+基本的に引数を必要とするオプションコマンドについては、`-pv`といった繋げて表記する、ということはできません。
+
+## 解説-【スペシャル課題】二つのNginxコンテナを起動させよう。
+
+### 解答例
+
+```
+docker run -d -p 8080:80 nginx:1.15-alpine
+docker run -d -p 9090:80 -v ${PWD}:/usr/share/nginx/html nginx:1.15-alpine
+```
+
+２つコマンドを打つだけですが、ホストPCのポート番号が重複しないようにしましょう。
+
+失敗例
+```
+docker run -d -it -p 20:80 nginx:1.15-alpine
+```
+
+ウェルノウンポートという概念があります。コンピューターが特定のネットワーク通信を行う際にほぼ確定的に使用されるポート番号です。20番ポートに関しては`FTP`通信を行うためのポート番号となっています。
+
+基本的にウェルノウンポートは使用しないようにしましょう。
+
+https://ja.wikipedia.org/wiki/TCP%E3%82%84UDP%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E3%83%9D%E3%83%BC%E3%83%88%E7%95%AA%E5%8F%B7%E3%81%AE%E4%B8%80%E8%A6%A7
 
 ## 【おかたづけ】Dockerコンテナをストップし、削除しましょう。
 
-### 条件
+### 片付け方一例
 
-1. 3つの課題で作成したコンテナについて、全て停止しましょう。
+```
+docker container ps
+```
 
-1. 3つの課題で作成したコンテナについて、全て削除しましょう。
+でコンテナネームやコンテナIDを確認後、
 
-### Hint
+```
+docker container stop コンテナネームorコンテナID
+```
 
-#### Dockerコンテナの停止方法とDockerコンテナの削除方法について
+そうして停止したコンテナに対し
 
-いろんな方法がありますが、消えていればなんでも良いです。
+```
+docker container rm コンテナネームorコンテナID
+```
 
-既に消しちゃってても問題ないです。ただのお片付けですから。
+を行いましょう。
+
