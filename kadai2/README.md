@@ -1,145 +1,183 @@
-## 【基本課題】Dockerfileを完成させましょう。
+## 解説-【基本課題】Dockerfileを完成させましょう。
 
-### 条件
-
-1. `kadai2-1`ディレクトリ内には`run.py`というWebアプリケーションを起動するプログラムがあります。このプログラムを実行するDockerfileを作成しましょう。
-
-1. `run.py`はPythonで作成されています。また、`Flask`というWebフレームワークを使用しています。
-
-1. `kadai2-1`ディレクトリ内の`Dockerfile`はいくつか足りない記述があります。それを埋めるように書きましょう。
-
-1. っていうか`自由`に書いてもらっても構いません。
-
-1. ただし、コンテナ内の環境変数に次の値を入れる必要があります。
-
-1. 環境変数「FLASK_ENV」に「development」という値を入れる。
-
-1. 環境変数「FLASK_APP」に「run.py」という値を入れる。
-
-1. 完成した`Dockerfile`を元にコンテナのポート番号`5000`をポートマッピングをして起動させましょう。
-
-1. 以下のスクリーンショットのように表示していれば問題ありません。
-
-1. また、http://IP_ADDRESS:PORT/kuzunohaとすれば`Hello kuzunoha`と表示されます。併せて確認しましょう。
-
-上記の条件のとき
+### 解答例
 
 1. 使用する`Dockerfile`
 
-1. その`Dockerfile`をbuildするコマンド
+```
+FROM python:3.6.8-alpine
+# Hint: Image生成時に右のコマンドを実行させましょう。 `pip install Flask==1.0.2`
+RUN pip install Flask==1.0.2
+# Hint: run.pyを/var/www内にコピーさせましょう。
+COPY ./run.py /var/www/run.py
+# Hint: WorkingDirectlyを/var/wwwに設定させましょう。
+WORKDIR /var/www
+# Hint: 環境変数「FLASK_ENV」に「development」という値を入れさせましょう。
+ENV FLASK_ENV=development
+# Hint: 環境変数「FLASK_APP」に「run.py」という値を入れさせましょう。
+ENV FLASK_APP=run.py
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+```
 
-1. その`DockerImage`を元にコンテナを立ち上げるコマンド
+2. その`Dockerfile`をbuildするコマンド
 
-それぞれを解答としてください。
+```
+docker build . -t flask:1.0
+```
+
+3. その`DockerImage`を元にコンテナを立ち上げるコマンド
+
+```
+docker run -p 5000:5000 flask:1.0
+```
 
 ![hello_world](https://github.com/anzairyo0127/docker_kadai/blob/master/image/flask_helloworld.png)
 
 ![hello_kuzunoha](https://github.com/anzairyo0127/docker_kadai/blob/master/image/flask_hello_kuzunoha.png)
 
-### Hint
+### 解説
 
-#### Dockerfile内のHint
+特に問題となる部分がないと思います。
 
-`Dockerfile`内のコメントである`Hint`を元に書いてもらっても良いです。
+```
+# Hint: run.pyを/var/www内にコピーさせましょう。
+COPY ./run.py /var/www/run.py
+```
 
-## 【応用課題】DockerfileにARGSを持たせてフレキシブルなものにしよう。
+こちらでも良いです。
 
-1. `kadai2-2`ディレクトリ内には`run.py`というWebアプリケーションを起動するプログラムがあります。このプログラムを実行するDockerfileを作成しましょう。
+```
+# Hint: run.pyを/var/www内にコピーさせましょう。
+ADD https://raw.githubusercontent.com/anzairyo0127/docker_kadai/master/kadai2/kadai2-2/run.py /var/www/run.py
+```
 
-1. 使用するベースイメージである`python`Imageのタグをフレキシブルに変更できるようにするため、`docker build`のオプションコマンド` --build-arg`を使って使用するタグを`3.6.8-alpine`か`3.7.3-alpine`変更できるようにします。
+githubのコードを`ADD`でコピーする際は`rawファイル`のURLを指定してあげてください。
 
-1. 例えば`docker build --build-arg ver=3.7.3 …`とすれば`python:3.7.3-alpine`をベースイメージにするようになる、など。
+## 解説-【応用課題】DockerfileにARGSを持たせてフレキシブルなものにしよう。
 
-1. また`Flask`も環境変数「FLASK_ENV」に「development」か「production」を切り替えられるようにしましょう。
-
-1. 例えば`docker build --build-arg env=production …`とすれば環境変数`FLASK_ENV`に`production`が代入されるなど。
-
-1. 完成した`Dockerfile`を元にコンテナのポート番号`5000`をポートマッピングをして起動させましょう。
-
-上記の条件のとき
-
-1. 使用する`Dockerfile`
-
-1. その`Dockerfile`をbuildするコマンド
-
-1. その`DockerImage`を元にコンテナを立ち上げるコマンド
-
-それぞれを解答としてください。
-
-### Hint
-
-#### ARGを使う
-
-`ARG`とはDockerfile内で使える変数のようなものです。
-
-`ARG hogehoge`で`hogehoge`という変数を宣言できます。
-
-`RUN COMMAND ${hogehoge}`とすると変数を使用できます。
-
-上記のような記載があるDockerfileについて
-
-`docker build . --build-arg hogehoge=piyopiyo`とコマンドを打つと
-
-`hogehoge`変数内に`piyopiyo`という値が代入されます。
-
-その他については、調べて見ましょう。
-
-#### デフォルト値も使ってみましょう。
-
-オプションコマンド`--build-arg`について、このオプションを使用しない場合は、そのARGのデフォルトの値が使用されます。
-
-`ARG hogehoge="piyopiyo"`とこのようにして使うことが出来ます。
-
-## 【スペシャル課題】CharesetがUTF-8のMySQLイメージを作成しよう。
-
-#### 条件
-
-1. MySQLのデフォルトのcharsetは`latin1`というものを使用しています。
-
-1. charsetを`utf8`に変更したmysqlイメージを作りましょう。
-
-1. ベースイメージは`mysql:5.7.26`としてください。
-
-上記の条件のとき
+### 解答例
 
 1. 使用する`Dockerfile`
 
-1. その`Dockerfile`をbuildするコマンド
+```
+# 本来、FROMが一番上に来るように作るのがDockerfileの習わしです。
+# しかし、そのFROM部分にARGを使う場合は、FROMより上部にないといけません。
+ARG py_ver
+ARG flask_env="development"
+FROM python:${py_ver}-alpine
+# Hint: Image生成時に右のコマンドを実行させましょう。 `pip install Flask==1.0.2`
+RUN pip install Flask==1.0.2
+# Hint: run.pyを/var/www内にコピーさせましょう。
+ADD https://raw.githubusercontent.com/anzairyo0127/docker_kadai/master/kadai2/kadai2-2/run.py /var/www/run.py
+# Hint: WorkingDirectlyを/var/wwwに設定させましょう。
+WORKDIR /var/www
+# Hint: 環境変数「FLASK_ENV」に「development」という値を入れさせましょう。
+ENV FLASK_ENV=${flask_env}
+# Hint: 環境変数「FLASK_APP」に「run.py」という値を入れさせましょう。
+ENV FLASK_APP=run.py
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+```
 
-1. その`DockerImage`を元にコンテナを立ち上げるコマンド
+2. その`Dockerfile`をbuildするコマンド
 
-それぞれを解答としてください。
+`docker build . --build-arg py_ver=3.7.2 --build-arg flask_env=production -t flask:2.0`
 
-### Hint
+3. その`DockerImage`を元にコンテナを立ち上げるコマンド
 
-#### ミドルウェアを理解するということ
+`docker run -p 5000:5000 flask:2.0`
 
-発生する問題の大凡はミドルウェアのことをよく知らないから発生します。
+### 解説
 
-そういった時に調べたり誰かに聞いたりするということをしましょう。
+`ARG`を使うことで変数を使うことが出来ます。
 
-#### 沢山の解決方法
+`docker build`時に`--build-arg`というオプションを追加してあげます。
 
-実はこれ、ググれば沢山の解決方法が出てきます。つまり、頻発する問題でもあるということです。
+複数の`ARG`がある場合、`--build-arg`も複数指定してあげます。
 
-#### 自由に解決しましょう。
+`FLASK_ENV`の値について、`production`か`development`のどちらかを与えてあげます。
 
-実はDockerfileを作らなくても解決できます…まぁそれでもいいです。ぶっちゃけ。
+`docker run`をするとログが出力されますが
 
-## 【おかたづけ】作ったものは削除しましょう。
+```
+ * Serving Flask app "run.py"
+ * Environment: production <-ここが変化する。
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+```
 
-### 条件
+## 解説-【スペシャル課題】CharesetがUTF-8のMySQLイメージを作成しよう。
 
-1. 3つの課題で作成したコンテナについて、全て停止しましょう。
+### 解答例
 
-1. 3つの課題で作成したコンテナについて、全て削除しましょう。
+0. 準備する
 
-1. 3つの課題で作成したイメージについて、全て削除しましょう。
+以下の`mysql.cnf`というcnfファイルを作る
 
-### Hint
+```
+[mysql]
+default-character-set=utf8
+[mysqld]
+character-set-server=utf8
+[client]
+default-character-set=utf8
+```
 
-#### Dockerイメージの削除方法について
+1. 使用する`Dockerfile`
 
-いろんな方法がありますが、消えていればなんでも良いです。
+```
+FROM mysql:5.7.26
 
-既に消しちゃってても問題ないです。ただのお片付けですから。
+COPY ./mysql.cnf /etc/mysql/my.cnf
+
+RUN chmod 644 /etc/mysql/my.cnf
+```
+
+2. その`Dockerfile`をbuildするコマンド
+
+`docker build . -t test_mysql:1.0`
+
+3. その`DockerImage`を元にコンテナを立ち上げるコマンド
+
+`docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=secret test_mysql:1.0`
+
+### 解説
+
+MySQLには`cnf`ファイルを与えることでその設定を読み込んで立ち上がることが出来ます。
+
+その`cnf`ファイルをコンテナ内のディレクトリにコピー使っています。
+
+`-e`コマンドは環境変数を代入できます。
+
+`mysql:5.7.26`は環境変数`MYSQL_ROOT_PASSWORD`に何らかの値を入れないと立ち上がらないようになっています。
+
+ベースイメージに`mysql:5.7.26`を使用していますので、環境変数が必要な部分に関しても変わりはありません。
+
+Dockerfileに環境変数を代入しても良いでしょう。
+
+立ち上がったコンテナへは`mysql-client`を使ってアクセスできます。
+
+`mysql-client`では`mysql -h 127.0.0.1 -P 3306 -u root -p`といったコマンドになります。
+
+`mysql-client`内で`show variables like '%char%';`と打ちましょう。
+
+```
+mysql> show variables like '%char%';
++--------------------------+----------------------------+
+| Variable_name            | Value                      |
++--------------------------+----------------------------+
+| character_set_client     | utf8                       |
+| character_set_connection | utf8                       |
+| character_set_database   | utf8                       | # ここがutf8
+| character_set_filesystem | binary                     |
+| character_set_results    | utf8                       |
+| character_set_server     | utf8                       | # ここがutf8
+| character_set_system     | utf8                       |
+| character_sets_dir       | /usr/share/mysql/charsets/ |
++--------------------------+----------------------------+
+```
+
+## 片付け方法-【おかたづけ】作ったものは削除しましょう。
+
+`docker image rm IMAGE:TAG`とすれば、そのDockerイメージは削除できます。
