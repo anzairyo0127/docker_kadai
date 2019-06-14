@@ -96,7 +96,7 @@ CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
 
 `FLASK_ENV`の値について、`production`か`development`のどちらかを与えてあげます。
 
-`docker run`をするとログが出力されますが
+`docker run`をすると以下のようなログが出力されます。
 
 ```
  * Serving Flask app "run.py"
@@ -106,6 +106,16 @@ CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
  * Debug mode: off
  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 ```
+
+`* Environment: production`が`* Environment: development`となったりします。
+
+`* Environment: development`のとき、`Flask`のデバッグモードが動作しています。
+
+`* Environment: production`のとき、`Flask`のデバッグモードが動作しません。
+
+デバッグモードのとき、`http://127.0.0.1:8080/test/hogehoge`にアクセスすれば
+
+デバッグが出力されます。
 
 ## 解説-【スペシャル課題】CharesetがUTF-8のMySQLイメージを作成しよう。
 
