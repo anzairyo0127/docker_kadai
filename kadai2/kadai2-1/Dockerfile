@@ -1,7 +1,7 @@
 FROM python:3.6.8-alpine
 # Hint: Image生成時に右のコマンドを実行させましょう。 `pip install Flask==1.0.2`
 
-# Hint: app.pyを/var/www内にコピーさせましょう。
+# Hint: run.pyを/var/www内にコピーさせましょう。
 
 # Hint: WorkingDirectlyを/var/wwwに設定させましょう。
 
