@@ -1,6 +1,7 @@
-# Hint: ARGで変数を宣言しましょう。
+# 本来、FROMが一番上に来るように作るのがDockerfileの習わしです。
+# しかし、そのFROM部分にARGを使う場合は、FROMより上部にないといけません。
 
-FROM python:${???}-alpine
+FROM python:3.6.8-alpine
 # Hint: Image生成時に右のコマンドを実行させましょう。 `pip install Flask==1.0.2`
 
 # Hint: app.pyを/var/www内にコピーさせましょう。
