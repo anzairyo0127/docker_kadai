@@ -36,6 +36,8 @@ docker run nginx:1.15-alpine
 
 ## 【応用課題】index.htmlを表示させましょう
 
+## WindowsのDockerToolboxでは不可
+
 ### 条件
 
 1. `docker`コマンドを使って`Hello Docker Volume`と表示するHTMLページを表示させましょう。
