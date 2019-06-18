@@ -1,0 +1,14 @@
+version: '3'
+services:
+  app:
+    build: .
+    environment:
+     - REDIS_ADDRESS=redis
+     - REDIS_PORT=6379
+    ports:
+     - "5000:5000"
+    volumes:
+     - "./app:/var/app"
+
+  redis:
+    image: redis:5.0.5-alpine
