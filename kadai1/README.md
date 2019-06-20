@@ -78,7 +78,7 @@ docker run -pv 8080:80 ${PWD}:/usr/share/nginx/html nginx:1.15-alpine
 
 ```
 docker run -d -p 8080:80 nginx:1.15-alpine
-docker run -d -p 9090:80 -v ${PWD}:/usr/share/nginx/html nginx:1.15-alpine
+docker run -d -p 9090:80 nginx:1.15-alpine
 ```
 
 ２つコマンドを打つだけですが、ホストPCのポート番号が重複しないようにしましょう。
