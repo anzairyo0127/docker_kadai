@@ -1,4 +1,4 @@
-## 【基本課題】Dockerfileを完成させましょう。
+## 【基本課題】Dockerfileを完成させましょう
 
 ### 条件
 
@@ -42,7 +42,7 @@
 
 `Dockerfile`内のコメントである`Hint`を元に書いてもらっても良いです。
 
-## 【応用課題】DockerfileにARGSを持たせてフレキシブルなものにしよう。
+## 【応用課題】DockerfileにARGSを持たせてフレキシブルなものにしよう
 
 1. `kadai2-2`ディレクトリ内には`run.py`というWebアプリケーションを起動するプログラムがあります。このプログラムを実行するDockerfileを作成しましょう。
 
@@ -90,15 +90,32 @@
 
 `ARG hogehoge="piyopiyo"`とこのようにして使うことが出来ます。
 
-## 【スペシャル課題】CharesetがUTF-8のMySQLイメージを作成しよう。
+## 【スペシャル課題】CharesetがUTF-8のMySQLイメージを作成しよう
 
 #### 条件
 
-1. MySQLのデフォルトのcharsetは`latin1`というものを使用しています。
+1. MySQLのデフォルトのデータベースのcharsetは`latin1`というものを使用しています。
 
 1. charsetを`utf8`に変更したmysqlイメージを作りましょう。
 
 1. ベースイメージは`mysql:5.7.26`としてください。
+
+1. mysql-cliで`show variables like '%char%';`と実行すると下記のようになっていれば、正解とします。
+
+```
++--------------------------+----------------------------+
+| Variable_name            | Value                      |
++--------------------------+----------------------------+
+| character_set_client     | utf8                       |
+| character_set_connection | utf8                       |
+| character_set_database   | utf8   # ここがutf8        |
+| character_set_filesystem | binary                     |
+| character_set_results    | utf8                       |
+| character_set_server     | utf8   # ここがutf8        | 
+| character_set_system     | utf8                       |
+| character_sets_dir       | /usr/share/mysql/charsets/ |
++--------------------------+----------------------------+
+```
 
 上記の条件のとき
 
@@ -122,11 +139,13 @@
 
 実はこれ、ググれば沢山の解決方法が出てきます。つまり、頻発する問題でもあるということです。
 
-#### 自由に解決しましょう。
+#### 自由に解決しましょう
 
-実はDockerfileを作らなくても解決できます…まぁそれでもいいです。ぶっちゃけ。
+実はDockerfileを作らなくても解決できます。解答はそれでも良しとします。
 
-## 【おかたづけ】作ったものは削除しましょう。
+その場合は`dockerコマンド`を解答としてください。
+
+## 【おかたづけ】作ったものは削除しましょう
 
 ### 条件
 
@@ -142,4 +161,4 @@
 
 いろんな方法がありますが、消えていればなんでも良いです。
 
-既に消しちゃってても問題ないです。ただのお片付けですから。
+既に消しちゃってても問題ないです。
